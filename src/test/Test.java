@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Test {
-    //this test work only with sebastien_bouttier.ics file
+    //this test work only with 1_test.ics file
 
     public static void main(String[] args) {
 

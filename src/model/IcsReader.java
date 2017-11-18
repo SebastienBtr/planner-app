@@ -59,6 +59,12 @@ public class IcsReader {
         }
     }
 
+    /**
+     * Initialize an event with start and end date and its description
+     * @param br the buffer of the ics file
+     * @param event event to initialize
+     * @throws IOException
+     */
     private static void initializeEvent(BufferedReader br, Event event) throws IOException {
 
         String line;
@@ -79,50 +85,64 @@ public class IcsReader {
         }
     }
 
+    /**
+     * Create the description of an event
+     * @param event event to set description
+     * @param line the String that contain the description
+     */
     private static void createDescription(Event event, String line) {
         event.setDescription(line.substring(12,13));
     }
 
+    /**
+     * Create the end date of an event
+     * @param event event to set end date
+     * @param line the String that contain the end date
+     */
     private static void createEndDate(Event event, String line) {
         //date with time zone reference
-        //example : DTSTART;TZID=US-Eastern:19980119T020000
         if(line.contains("TZID")) {
             event.setEndDate(createDateZoneRef(line));
         }
         //time UTC
-        //example : DTSTART:19980119T070000Z
         else if(line.contains("Z")) {
             String dateString = line.substring(6);
             event.setEndDate(createDateUTC(dateString));
         }
         //local time
-
         else {
             String dateString = line.substring(6);
             event.setStartDate(createDateLocal(dateString));
         }
     }
 
+    /**
+     * Create the start date of an event
+     * @param event event to set start date
+     * @param line the String that contain the start date
+     */
     private static void createStartDate(Event event, String line) {
         //date with time zone reference
-        //example : DTSTART;TZID=US-Eastern:19980119T020000
         if(line.contains("TZID")) {
             event.setStartDate(createDateZoneRef(line));
         }
         //time UTC
-        //example : DTSTART:19980119T070000Z
         else if(line.contains("Z")) {
             String dateString = line.substring(8);
             event.setStartDate(createDateUTC(dateString));
         }
         //local time
-        //example : DTSTART:19980118T230000
         else {
             String dateString = line.substring(8);
             event.setStartDate(createDateLocal(dateString));
         }
     }
 
+    /**
+     * Create a local date with a string
+     * @param dateString the String of the date, like : 19980118T230000
+     * @return the Date created
+     */
     private static Date createDateLocal(String dateString) {
         DateFormat format = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
         Date date = null;
@@ -136,6 +156,11 @@ public class IcsReader {
         return date;
     }
 
+    /**
+     * Create a UTC date with a String
+     * @param dateString the String of the date, like : 19980119T070000Z
+     * @return the Date created
+     */
     private static Date createDateUTC(String dateString) {
         DateFormat format = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -150,6 +175,11 @@ public class IcsReader {
         return date;
     }
 
+    /**
+     * Create a date with time zone reference
+     * @param line the String that contain the date, like : DTSTART;TZID=US-Eastern:19980119T020000
+     * @return the Date created
+     */
     private static Date createDateZoneRef(String line) {
         String[] parts = line.split("=");
         parts = parts[1].split(":");

@@ -76,16 +76,33 @@ public class PlannerApp {
         return status;
     }
 
+    /**
+     * Check if the date is modulo 15 and if it is between 8am and 8pm
+     * @param time the date to test
+     * @return true if the date is correct
+     */
     private boolean timeIsCorrect(Date time) {
         return time.getMinutes()%15 == 0 && time.getHours() < 20 && time.getHours() >= 8;
     }
 
+    /**
+     * Give the end of a time slot (15min)
+     * @param timeStart the time slot start
+     * @return the end of the time slot (timeStart + 15min)
+     */
     private Date getTimeEnd(Date timeStart) {
         Date timeEnd = timeStart;
         timeEnd.setMinutes(timeStart.getMinutes()+15);
         return timeEnd;
     }
 
+    /**
+     * Check if an event intersect with a time slot
+     * @param eventStart the event start date
+     * @param eventEnd the event end date
+     * @param timeStart the time slot start
+     * @return true if the event intersect with the time slot
+     */
     private boolean eventIntersect(Date eventStart, Date eventEnd, Date timeStart) {
         return (eventStart.before(timeStart) && eventEnd.after(timeStart)) ||
                 ((eventStart.after(timeStart) || eventStart.equals(timeStart))

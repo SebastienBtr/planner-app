@@ -92,8 +92,8 @@ public class IcsReader {
      */
     private static void createDescription(Event event, String line) {
 
-        if(line.length() >= 13) {
-            event.setDescription(line.substring(12, 13));
+        if(line.length() >= 13 && descriptionIsCorrect(line)) {
+            event.setDescription(line.substring(12, 13).toUpperCase());
         }
         else {
             event.setDescription("A");
@@ -201,6 +201,22 @@ public class IcsReader {
         }
 
         return date;
+    }
+
+    /**
+     * Check if the description of an event is correct
+     * @param line the line that contain the description
+     * @return true if the description is "A","O" or "I"
+     */
+    private static boolean descriptionIsCorrect(String line) {
+        String description = line.substring(12, 13);
+        description.toUpperCase();
+
+        if(description.equals("A") || description.equals("O") || description.equals("I")) {
+            return true;
+        }
+
+        return false;
     }
 
 }

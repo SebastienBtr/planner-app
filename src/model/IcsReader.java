@@ -91,7 +91,13 @@ public class IcsReader {
      * @param line the String that contain the description
      */
     private static void createDescription(Event event, String line) {
-        event.setDescription(line.substring(12,13));
+
+        if(line.length() >= 13) {
+            event.setDescription(line.substring(12, 13));
+        }
+        else {
+            event.setDescription("A");
+        }
     }
 
     /**
